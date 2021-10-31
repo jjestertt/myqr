@@ -5,9 +5,8 @@ import {Button, Icon} from "react-native-elements";
 const styles = StyleSheet.create({
     pikerButton: {
         backgroundColor: '#A2D2FF',
-        minWidth: 170,
-        maxWidth: 190,
-        width: '100%',
+        minWidth: '48%',
+        maxWidth: '100%',
         paddingTop: 13,
         paddingBottom: 13,
         paddingLeft: 26,

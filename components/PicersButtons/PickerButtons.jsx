@@ -36,8 +36,9 @@ const PickerButtons = ({setUploadedPhoto, handleStep}) => {
 const styles = StyleSheet.create({
     pikerButtons: {
         ...styleFlex('row', 'space-between', 'center'),
-        maxWidth: 360,
         width: '100%',
+        paddingLeft: '3%',
+        paddingRight: '3%'
     }
 })
 

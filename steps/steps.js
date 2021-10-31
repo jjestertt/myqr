@@ -1,5 +1,6 @@
 import ChoosePicture from "../pages/ChoosePicture";
 import Camera from "../pages/Camera";
+import Result from "../pages/Result";
 
 export const steps = [
     {
@@ -10,8 +11,8 @@ export const steps = [
         name: 'main',
         component: Camera
     },
-    // {
-    //     name: '',
-    //     component: ''
-    // }
+    {
+        name: 'result',
+        component: Result
+    }
 ]

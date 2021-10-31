@@ -4,7 +4,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import PickerButton from "../components/PicersButtons/PickerButton";
 import {styleFlex} from "../utils";
 
-export default function Camera({ setEncryptQr, encryptQr, handleStep }) {
+export default function Camera({ handleBarCodeScanned, encryptQr, handleStep }) {
     const [hasPermission, setHasPermission] = useState(null);
 
     useEffect(() => {
@@ -14,15 +14,17 @@ export default function Camera({ setEncryptQr, encryptQr, handleStep }) {
         })();
     }, []);
 
-    const handleBarCodeScanned = ({ data }) => {
-        setEncryptQr(data)
-    };
-
     if (hasPermission === null) {
-        return <Text>Requesting for camera permission</Text>;
+        return null
+        // return <Text>Requesting for camera permission</Text>;
     }
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return  null
+        // return <Text>No access to camera</Text>;
+    }
+
+    const handleTryAgain = () => {
+        handleBarCodeScanned({ data: '' })
     }
 
     return (
@@ -30,7 +32,8 @@ export default function Camera({ setEncryptQr, encryptQr, handleStep }) {
             <BarCodeScanner
                 onBarCodeScanned={
                     encryptQr ? undefined :
-                        handleBarCodeScanned}
+                        handleBarCodeScanned
+                }
                 style={StyleSheet.absoluteFillObject}
             />
             {
@@ -44,11 +47,11 @@ export default function Camera({ setEncryptQr, encryptQr, handleStep }) {
                         <View style={styles.buttons}>
                             <PickerButton
                                 title={'Tap to Again'}
-                                onPress={() => handleBarCodeScanned({ data: null })}
+                                onPress={handleTryAgain}
                             />
                             <PickerButton
                                 title={'Next'}
-                                onPress={() => handleStep('clear')}
+                                onPress={() => handleStep('next')}
                             />
                         </View>
                     </View>
@@ -62,6 +65,7 @@ export default function Camera({ setEncryptQr, encryptQr, handleStep }) {
                             </Text>
                         </View>
                         <PickerButton
+                            style={styles.backButton}
                             title={'Back'}
                             onPress={() => handleStep('clear')}
                         />
@@ -75,6 +79,7 @@ const styles = StyleSheet.create({
     container: {
         ...styleFlex('column', 'flex-end', 'center'),
         flex: 1,
+        height: '100%',
         paddingBottom: '5%'
     },
     QRFrameContainer: {
@@ -106,5 +111,9 @@ const styles = StyleSheet.create({
     buttons: {
         width: '100%',
         ...styleFlex('row', 'space-between', 'center')
+    },
+    backButton: {
+        minWidth: 300,
+        maxWidth: 300
     }
 });

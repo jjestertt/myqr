@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {steps} from "../steps/steps";
+import {clearAsyncStorage, getAsyncStorage, setAsyncStorage} from "../utils";
 
 const Layout = () => {
     const [encryptQr, setEncryptQr] = useState(null)
@@ -7,7 +8,16 @@ const Layout = () => {
 
     const [currentStep, setCurrentStep] = useState(0)
 
-    const handleStep = (type) => {
+    useEffect(async () => {
+        const encryptQr = await getAsyncStorage('encryptQr')
+        if (!!encryptQr){
+            setEncryptQr(encryptQr)
+            setCurrentStep(2)
+        }
+    }, [])
+
+
+    const handleStep = async (type) => {
         switch (type){
             case 'next': {
                 setCurrentStep(currentStep + 1)
@@ -18,12 +28,18 @@ const Layout = () => {
                 break
             }
             case 'clear': {
+                await clearAsyncStorage()
                 setCurrentStep(0)
                 setEncryptQr(null)
                 setUploadedPhoto(null)
             }
         }
     }
+
+    const handleBarCodeScanned = async ({ data }) => {
+        await setAsyncStorage('encryptQr', data)
+        setEncryptQr(data)
+    };
 
     return (
         <>
@@ -36,6 +52,7 @@ const Layout = () => {
                             uploadedPhoto={uploadedPhoto}
                             encryptQr={encryptQr}
                             setEncryptQr={setEncryptQr}
+                            handleBarCodeScanned={handleBarCodeScanned}
                             handleStep={handleStep}
                         />
                     )
