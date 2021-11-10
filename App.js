@@ -6,7 +6,7 @@ import Layout from "./pages/Layout";
 export default function App() {
     return (
         <View style={styles.container}>
-            <StatusBar style="auto" />
+            <StatusBar style="auto" id='1'/>
             <Layout/>
         </View>
   )
